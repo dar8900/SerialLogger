@@ -9,17 +9,17 @@ SerialDebug::SerialDebug(serial_used SerialUsed, baudrate Baudrate, bool LogEnab
 			break;
 		case ard_mega_serial_1:
 #if defined(UBRR1H)
-			_debugSerial = Serial1;
+			_debugSerial = &Serial1;
 #endif
 			break;
 		case ard_mega_serial_2:
 #if defined(UBRR2H)		
-			_debugSerial = Serial2;
+			_debugSerial = &Serial2;
 #endif			
 			break;
 		case ard_mega_serial_3:
 #if defined(UBRR3H)		
-			_debugSerial = Serial3;
+			_debugSerial = &Serial3;
 #endif			
 			break;
 		default:
