@@ -55,7 +55,7 @@ class SerialDebug
 
     private:
 
-        HardwareSerial _debugSerial;
+        HardwareSerial *_debugSerial;
         debug_level _debugLevel;
         bool _logEnabled = false;
         bool _enableTimePrint = false;

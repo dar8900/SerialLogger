@@ -2,44 +2,50 @@
 
 SerialDebug::SerialDebug(serial_used SerialUsed, baudrate Baudrate, bool LogEnabled) : _logEnabled(LogEnabled)
 {
-    switch (_debugSerial)
+    switch (SerialUsed)
     {
         case ard_1_serial:
-			_debugSerial = Serial;
+			_debugSerial = &Serial;
 			break;
 		case ard_mega_serial_1:
+#if defined(UBRR1H)
 			_debugSerial = Serial1;
+#endif
 			break;
 		case ard_mega_serial_2:
+#if defined(UBRR2H)		
 			_debugSerial = Serial2;
+#endif			
 			break;
 		case ard_mega_serial_3:
+#if defined(UBRR3H)		
 			_debugSerial = Serial3;
+#endif			
 			break;
 		default:
-			_debugSerial = Serial;
+			_debugSerial = &Serial;
         	break;
     }
 
 	switch (Baudrate)
 	{
 		case baud_9600:
-			_debugSerial.begin(9600);
+			_debugSerial->begin(9600);
 			break;
 		case baud_19200:
-			_debugSerial.begin(19200);
+			_debugSerial->begin(19200);
 			break;
 		case baud_38400:
-			_debugSerial.begin(38400);
+			_debugSerial->begin(38400);
 			break;
 		case baud_57600:
-			_debugSerial.begin(5760);
+			_debugSerial->begin(5760);
 			break;
 		case baud_115200:
-			_debugSerial.begin(115200);
+			_debugSerial->begin(115200);
 			break;
 		case baud_921600:
-			_debugSerial.begin(921600);
+			_debugSerial->begin(921600);
 			break;
 		default:
 			break;
@@ -83,7 +89,7 @@ DebugString SerialDebug::_buildMsg(DebugString Msg, DebugString Level)
 	DebugString Time = "";
 	if(_enableTimePrint)
 	{
-		Time = _timeLog + " ";
+		Time = _timeLog() + " ";
 	}
 	Msg = Time + Level + "\t" + Msg;
 	return Msg;
@@ -100,7 +106,7 @@ void SerialDebug::logError(DebugString Message)
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[ERROR]");
-			_debugSerial.print(Message);
+			_debugSerial->print(Message);
 		}
 	}
 }
@@ -116,7 +122,7 @@ void SerialDebug::logInfo(DebugString Message)
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[INFO]");
-			_debugSerial.print(Message);
+			_debugSerial->print(Message);
 		}
 	}
 }
@@ -132,7 +138,7 @@ void SerialDebug::logVerbose(DebugString Message)
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[VERB]");
-			_debugSerial.print(Message);
+			_debugSerial->print(Message);
 		}
 	}
 }
@@ -148,7 +154,7 @@ void SerialDebug::logDebug(DebugString Message)
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[DEBUG]");
-			_debugSerial.print(Message);
+			_debugSerial->print(Message);
 		}
 	}
 }
