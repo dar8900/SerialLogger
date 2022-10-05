@@ -48,10 +48,10 @@ class SerialDebug
         void setDebugLevel(debug_level DebugLevel);
         void setLogStatus(bool Enable);
         void setTimePrint(bool Enable);
-        void logError(DebugString Message);
-        void logInfo(DebugString Message);
-        void logVerbose(DebugString Message);
-        void logDebug(DebugString Message);
+        void logError(DebugString Message, bool NewLine = true);
+        void logInfo(DebugString Message, bool NewLine = true);
+        void logVerbose(DebugString Message, bool NewLine = true);
+        void logDebug(DebugString Message, bool NewLine = true);
 
     private:
 

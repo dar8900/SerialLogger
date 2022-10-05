@@ -95,7 +95,7 @@ DebugString SerialDebug::_buildMsg(DebugString Msg, DebugString Level)
 	return Msg;
 }
 
-void SerialDebug::logError(DebugString Message)
+void SerialDebug::logError(DebugString Message, bool NewLine)
 {
 	if(_logEnabled)
 	{
@@ -106,12 +106,19 @@ void SerialDebug::logError(DebugString Message)
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[ERROR]");
-			_debugSerial->print(Message);
+			if(NewLine)
+			{
+				_debugSerial->println(Message);
+			}
+			else
+			{
+				_debugSerial->print(Message);
+			}
 		}
 	}
 }
 
-void SerialDebug::logInfo(DebugString Message)
+void SerialDebug::logInfo(DebugString Message, bool NewLine)
 {
 	if(_logEnabled)
 	{	
@@ -122,12 +129,19 @@ void SerialDebug::logInfo(DebugString Message)
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[INFO]");
-			_debugSerial->print(Message);
+			if(NewLine)
+			{
+				_debugSerial->println(Message);
+			}
+			else
+			{
+				_debugSerial->print(Message);
+			}
 		}
 	}
 }
 
-void SerialDebug::logVerbose(DebugString Message)
+void SerialDebug::logVerbose(DebugString Message, bool NewLine)
 {
 	if(_logEnabled)
 	{
@@ -138,12 +152,19 @@ void SerialDebug::logVerbose(DebugString Message)
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[VERB]");
-			_debugSerial->print(Message);
+			if(NewLine)
+			{
+				_debugSerial->println(Message);
+			}
+			else
+			{
+				_debugSerial->print(Message);
+			}
 		}
 	}
 }
 
-void SerialDebug::logDebug(DebugString Message)
+void SerialDebug::logDebug(DebugString Message, bool NewLine)
 {
 	if(_logEnabled)
 	{
@@ -154,7 +175,14 @@ void SerialDebug::logDebug(DebugString Message)
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[DEBUG]");
-			_debugSerial->print(Message);
+			if(NewLine)
+			{
+				_debugSerial->println(Message);
+			}
+			else
+			{
+				_debugSerial->print(Message);
+			}
 		}
 	}
 }
