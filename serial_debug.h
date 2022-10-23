@@ -44,8 +44,9 @@ class SerialDebug
         }debug_level;
 
 
-        SerialDebug(serial_used SerialUsed, baudrate Baudrate, bool LogEnabled);
-        void setDebugLevel(debug_level DebugLevel);
+        SerialDebug(baudrate Baudrate, bool LogEnabled);
+        void init();
+        void setDebugLevel(debug_level DebugLevel = all);
         void setLogStatus(bool Enable);
         void setTimePrint(bool Enable);
         void logError(DebugString Message, bool NewLine = true);
@@ -55,10 +56,11 @@ class SerialDebug
 
     private:
 
-        HardwareSerial *_debugSerial;
         debug_level _debugLevel;
+        bool _serialItitialized = false;
         bool _logEnabled = false;
         bool _enableTimePrint = false;
+        uint32_t _baudRate = 9600;
         DebugString _timeLog();
         DebugString _buildMsg(DebugString Msg, DebugString Level);
 };
