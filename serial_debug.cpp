@@ -1,5 +1,14 @@
 #include "serial_debug.h"
 
+
+#if defined(UBRRH) || defined(UBRR0H)
+  #define DebugSerial	Serial
+#endif
+#if defined(UBRR1H)
+  #define DebugSerial	Serial1
+#endif
+
+
 SerialDebug::SerialDebug(baudrate Baudrate, bool LogEnabled)
 {
 	switch (Baudrate)
@@ -46,7 +55,7 @@ DebugString SerialDebug::_timeLog()
 
 void SerialDebug::init()
 {
-	Serial.begin(_baudRate);
+	DebugSerial.begin(_baudRate);
 	_serialItitialized = true;
 }
 
@@ -93,11 +102,11 @@ void SerialDebug::logError(DebugString Message, bool NewLine)
 			Message = _buildMsg(Message, "[ERROR]");
 			if(NewLine)
 			{
-				Serial.println(Message);
+				DebugSerial.println(Message);
 			}
 			else
 			{
-				Serial.print(Message);
+				DebugSerial.print(Message);
 			}
 		}
 	}
@@ -116,11 +125,11 @@ void SerialDebug::logInfo(DebugString Message, bool NewLine)
 			Message = _buildMsg(Message, "[INFO]");
 			if(NewLine)
 			{
-				Serial.println(Message);
+				DebugSerial.println(Message);
 			}
 			else
 			{
-				Serial.print(Message);
+				DebugSerial.print(Message);
 			}
 		}
 	}
@@ -139,11 +148,11 @@ void SerialDebug::logVerbose(DebugString Message, bool NewLine)
 			Message = _buildMsg(Message, "[VERB]");
 			if(NewLine)
 			{
-				Serial.println(Message);
+				DebugSerial.println(Message);
 			}
 			else
 			{
-				Serial.print(Message);
+				DebugSerial.print(Message);
 			}
 		}
 	}
@@ -162,12 +171,14 @@ void SerialDebug::logDebug(DebugString Message, bool NewLine)
 			Message = _buildMsg(Message, "[DEBUG]");
 			if(NewLine)
 			{
-				Serial.println(Message);
+				DebugSerial.println(Message);
 			}
 			else
 			{
-				Serial.print(Message);
+				DebugSerial.print(Message);
 			}
 		}
 	}
 }
+
+SerialDebug Debug(SerialDebug::baudrate::baud_115200, true);

@@ -12,14 +12,6 @@ class SerialDebug
 
         typedef enum
         {
-            ard_1_serial = 0,
-            ard_mega_serial_1,
-            ard_mega_serial_2,
-            ard_mega_serial_3,
-        }serial_used;
-
-        typedef enum
-        {
             baud_9600 = 0,
             baud_19200,
             baud_38400,
@@ -64,5 +56,8 @@ class SerialDebug
         DebugString _timeLog();
         DebugString _buildMsg(DebugString Msg, DebugString Level);
 };
+
+
+extern SerialDebug Debug;
 
 #endif
