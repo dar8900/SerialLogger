@@ -97,6 +97,8 @@ void SerialDebug::logError(DebugString Message, bool NewLine)
 			_debugLevel == error_debug ||
 			_debugLevel == error_info ||
 			_debugLevel == error_verbose ||
+			_debugLevel == error_info_debug ||
+			_debugLevel == error_info_verbose ||
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[ERROR]");
@@ -120,6 +122,7 @@ void SerialDebug::logInfo(DebugString Message, bool NewLine)
 			_debugLevel == error_info ||
 			_debugLevel == info_debug ||
 			_debugLevel == info_verbose ||
+			_debugLevel == error_info_debug ||
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[INFO]");
@@ -143,6 +146,7 @@ void SerialDebug::logVerbose(DebugString Message, bool NewLine)
 			_debugLevel == error_verbose ||
 			_debugLevel == verbose_debug ||
 			_debugLevel == info_verbose ||
+			_debugLevel == error_info_verbose ||
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[VERB]");
@@ -166,6 +170,7 @@ void SerialDebug::logDebug(DebugString Message, bool NewLine)
 			_debugLevel == error_debug ||
 			_debugLevel == info_debug ||
 			_debugLevel == verbose_debug ||
+			_debugLevel == error_info_debug ||
 			_debugLevel == all)
 		{
 			Message = _buildMsg(Message, "[DEBUG]");

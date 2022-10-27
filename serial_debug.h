@@ -32,6 +32,8 @@ class SerialDebug
             info_verbose,
             info_debug,
             verbose_debug,
+            error_info_debug,
+            error_info_verbose,
             all
         }debug_level;
 
