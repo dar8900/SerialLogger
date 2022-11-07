@@ -1,11 +1,15 @@
 #include "serial_debug.h"
 
+#ifdef ESP8266
+	#define DebugSerial	Serial
+#else
 
-#if defined(UBRRH) || defined(UBRR0H)
-  #define DebugSerial	Serial
-#endif
-#if defined(UBRR1H)
-  #define DebugSerial	Serial1
+	#if defined(UBRRH) || defined(UBRR0H)
+	#define DebugSerial	Serial
+	#endif
+	#if defined(UBRR1H)
+	#define DebugSerial	Serial1
+	#endif
 #endif
 
 
