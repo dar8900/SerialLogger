@@ -2,6 +2,8 @@
 
 #ifdef ESP8266
 	#define DebugSerial	Serial
+#elif ESP32
+	#define DebugSerial	Serial
 #else
 
 	#if defined(UBRRH) || defined(UBRR0H)
