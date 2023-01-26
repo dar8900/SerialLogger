@@ -32,7 +32,7 @@ void setTimePrint(bool Enable);
 void logError(DebugString Message, bool NewLine = true);
 ```
 
-## Log only ingo log
+## Log only info log
 ``` c++
 void logInfo(DebugString Message, bool NewLine = true);
 ```

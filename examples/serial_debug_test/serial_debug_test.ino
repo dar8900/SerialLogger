@@ -4,8 +4,7 @@ void setup()
 {
 	Debug.init();
 	Debug.setTimePrint(true);
-	Debug.setDebugLevel(SerialDebug::debug_level::all)
-	
+	Debug.setDebugLevel(SerialDebug::debug_level::all);	
 }
 
 void loop()
