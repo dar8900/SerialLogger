@@ -37,15 +37,71 @@ class SerialDebug
             all
         }debug_level;
 
-
+        /**
+         * @brief Construct a new Serial Debug object
+         * 
+         * @param baudrate Baudrate 
+         * @param bool LogEnabled 
+         */
         SerialDebug(baudrate Baudrate, bool LogEnabled);
+
+        /**
+         * @brief Initialize all the variables for the log
+         * 
+         */
         void init();
+
+        /**
+         * @brief Set the Debug Level 
+         * 
+         * @param debug_level DebugLevel 
+         */
         void setDebugLevel(debug_level DebugLevel = all);
+
+        /**
+         * @brief Set the Log Status 
+         * 
+         * @param bool Enable 
+         */
         void setLogStatus(bool Enable);
+
+        /**
+         * @brief Set the Time Print 
+         * 
+         * @param bool Enable 
+         */
         void setTimePrint(bool Enable);
+
+        /**
+         * @brief 
+         * 
+         * @param DebugString Message 
+         * @param bool NewLine
+         */
         void logError(DebugString Message, bool NewLine = true);
+
+        /**
+         * @brief 
+         * 
+         * @param DebugString Message 
+         * @param bool NewLine
+         */
         void logInfo(DebugString Message, bool NewLine = true);
+        
+        /**
+         * @brief 
+         * 
+         * @param DebugString Message 
+         * @param bool NewLine
+         */
         void logVerbose(DebugString Message, bool NewLine = true);
+
+        /**
+         * @brief 
+         * 
+         * @param DebugString Message 
+         * @param bool NewLine
+         */
         void logDebug(DebugString Message, bool NewLine = true);
 
     private:

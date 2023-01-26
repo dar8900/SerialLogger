@@ -63,6 +63,9 @@ void SerialDebug::init()
 {
 	DebugSerial.begin(_baudRate);
 	_serialItitialized = true;
+	setDebugLevel(all);
+	setLogStatus(true);
+	setTimePrint(true);
 }
 
 void SerialDebug::setDebugLevel(debug_level DebugLevel)
