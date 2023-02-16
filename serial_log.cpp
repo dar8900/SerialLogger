@@ -86,7 +86,7 @@ LogString MasterLogger::_buildMsg(LogString Msg, LogString Level, bool NewLine)
 		}
 		Time = TimePrint + " ";
 	}
-	Msg = Time + Level + "\t" + "root - " + Msg + (NewLine ? "\n" : "");
+	Msg = Time + Level + "\t" + "root\t" + Msg + (NewLine ? "\n" : "");
 	return Msg;
 }
 
@@ -166,7 +166,7 @@ LogString BranchLogger::_buildMsg(LogString Msg, LogString Level, bool NewLine)
 		Time = TimePrint + " ";
 	}
 
-	Msg = Time + Level + "\t" + _moduleName + " - " + Msg + (NewLine ? "\n" : "");
+	Msg = Time + Level + "\t" + _moduleName + "\t" + Msg + (NewLine ? "\n" : "");
 	return Msg;
 }
 
