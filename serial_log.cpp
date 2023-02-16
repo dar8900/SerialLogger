@@ -14,7 +14,7 @@
 #endif
 #endif
 
-MasterLogger::MasterLogger(baudrate Baudrate = 115200, log_level Level, bool LogEnabled = true, bool TimeprintEnable)
+MasterLogger::MasterLogger(baudrate Baudrate, log_level Level, bool LogEnabled, bool TimeprintEnable)
 {
 	switch (Baudrate)
 	{
@@ -46,7 +46,7 @@ MasterLogger::MasterLogger(baudrate Baudrate = 115200, log_level Level, bool Log
 
 void MasterLogger::init()
 {
-	if (!_serialItitialized && _isRoot)
+	if (!_serialItitialized)
 	{
 		DebugSerial.begin(_baudRate);
 	}
@@ -100,7 +100,7 @@ void MasterLogger::logError(LogString Message, bool NewLine)
 						_logLevel == error_info_verbose ||
 						_logLevel == all))
 	{
-		Message = _buildMsg(Message, "[ERROR]");
+		Message = _buildMsg(Message, "[ERROR]", NewLine);
 		DebugSerial.print(Message);
 	}
 }
@@ -114,7 +114,7 @@ void MasterLogger::logInfo(LogString Message, bool NewLine)
 						_logLevel == error_info_debug ||
 						_logLevel == all))
 	{
-		Message = _buildMsg(Message, "[INFO]");
+		Message = _buildMsg(Message, "[INFO]", NewLine);
 		DebugSerial.print(Message);
 	}
 }
@@ -128,7 +128,7 @@ void MasterLogger::logVerbose(LogString Message, bool NewLine)
 						_logLevel == error_info_verbose ||
 						_logLevel == all))
 	{
-		Message = _buildMsg(Message, "[VERB]");
+		Message = _buildMsg(Message, "[VERB]", NewLine);
 		DebugSerial.print(Message);
 	}
 }
@@ -142,7 +142,7 @@ void MasterLogger::logDebug(LogString Message, bool NewLine)
 						_logLevel == error_info_debug ||
 						_logLevel == all))
 	{
-		Message = _buildMsg(Message, "[DEBUG]");
+		Message = _buildMsg(Message, "[DEBUG]", NewLine);
 		DebugSerial.print(Message);
 	}
 }
@@ -183,7 +183,7 @@ void BranchLogger::setBranchName(LogString BranchName)
 	_moduleName = BranchName;
 }
 
-void BranchLogger::setDebugLevel(log_level DebugLevel)
+void BranchLogger::setDebugLevel(log_level LogLevel)
 {
 	_logLevel = LogLevel;
 }
@@ -198,7 +198,7 @@ void BranchLogger::setTimePrint(bool Enable)
 	_enableTimePrint = Enable;
 }
 
-void BranchLogger::logError(LogString Message, bool NewLine = true)
+void BranchLogger::logError(LogString Message, bool NewLine)
 {
 	if (_logEnabled && (_logLevel == error ||
 						_logLevel == error_debug ||
@@ -208,12 +208,12 @@ void BranchLogger::logError(LogString Message, bool NewLine = true)
 						_logLevel == error_info_verbose ||
 						_logLevel == all))
 	{
-		Message = _buildMsg(Message, "[ERROR]");
+		Message = _buildMsg(Message, "[ERROR]", NewLine);
 		DebugSerial.print(Message);
 	}
 }
 
-void BranchLogger::logInfo(LogString Message, bool NewLine = true)
+void BranchLogger::logInfo(LogString Message, bool NewLine)
 {
 	if (_logEnabled && (_logLevel == info ||
 						_logLevel == error_info ||
@@ -222,12 +222,12 @@ void BranchLogger::logInfo(LogString Message, bool NewLine = true)
 						_logLevel == error_info_debug ||
 						_logLevel == all))
 	{
-		Message = _buildMsg(Message, "[INFO]");
+		Message = _buildMsg(Message, "[INFO]", NewLine);
 		DebugSerial.print(Message);
 	}
 }
 
-void BranchLogger::logVerbose(LogString Message, bool NewLine = true)
+void BranchLogger::logVerbose(LogString Message, bool NewLine)
 {
 	if (_logEnabled && (_logLevel == verbose ||
 						_logLevel == error_verbose ||
@@ -236,12 +236,12 @@ void BranchLogger::logVerbose(LogString Message, bool NewLine = true)
 						_logLevel == error_info_verbose ||
 						_logLevel == all))
 	{
-		Message = _buildMsg(Message, "[VERB]");
+		Message = _buildMsg(Message, "[VERB]", NewLine);
 		DebugSerial.print(Message);
 	}
 }
 
-void BranchLogger::logDebug(LogString Message, bool NewLine = true)
+void BranchLogger::logDebug(LogString Message, bool NewLine)
 {
 	if (_logEnabled && (_logLevel == debug ||
 						_logLevel == error_debug ||
@@ -250,7 +250,7 @@ void BranchLogger::logDebug(LogString Message, bool NewLine = true)
 						_logLevel == error_info_debug ||
 						_logLevel == all))
 	{
-		Message = _buildMsg(Message, "[DEBUG]");
+		Message = _buildMsg(Message, "[DEBUG]", NewLine);
 		DebugSerial.print(Message);
 	}
 }

@@ -32,21 +32,21 @@ class Logger
          * 
          * @param log_level DebugLevel 
          */
-        void setDebugLevel(log_level LogLevel = all) = 0;
+        virtual void setDebugLevel(log_level LogLevel = all) = 0;
 
         /**
          * @brief Set the Log Status 
          * 
          * @param bool Enable 
          */
-        void setLogStatus(bool Enable) = 0;
+        virtual void setLogStatus(bool Enable) = 0;
 
         /**
          * @brief Set the Time Print 
          * 
          * @param bool Enable 
          */
-        void setTimePrint(bool Enable) = 0;
+        virtual void setTimePrint(bool Enable) = 0;
         
         /**
          * @brief 
@@ -54,7 +54,7 @@ class Logger
          * @param LogString Message 
          * @param bool NewLine
          */
-        void logError(LogString Message, bool NewLine = true) = 0;
+        virtual void logError(LogString Message, bool NewLine = true) = 0;
 
         /**
          * @brief 
@@ -62,7 +62,7 @@ class Logger
          * @param LogString Message 
          * @param bool NewLine
          */
-        void logInfo(LogString Message, bool NewLine = true) = 0;
+        virtual void logInfo(LogString Message, bool NewLine = true) = 0;
         
         /**
          * @brief 
@@ -70,7 +70,7 @@ class Logger
          * @param LogString Message 
          * @param bool NewLine
          */
-        void logVerbose(LogString Message, bool NewLine = true) = 0;
+        virtual void logVerbose(LogString Message, bool NewLine = true) = 0;
 
         /**
          * @brief 
@@ -78,7 +78,7 @@ class Logger
          * @param LogString Message 
          * @param bool NewLine
          */
-        void logDebug(LogString Message, bool NewLine = true) = 0;   
+        virtual void logDebug(LogString Message, bool NewLine = true) = 0;   
 
 
 };
@@ -103,7 +103,7 @@ class MasterLogger : public Logger
          * @param baudrate Baudrate 
          * @param bool LogEnabled 
          */
-        MasterLogger(baudrate Baudrate = 115200, log_level Level, bool LogEnabled = true, bool TimeprintEnable);
+        MasterLogger(baudrate Baudrate, log_level Level, bool LogEnabled, bool TimeprintEnable);
 
         /**
          * @brief Initialize the serial (REQUIRED)
@@ -245,7 +245,7 @@ class BranchLogger : public Logger
         bool _logEnabled = false;
         bool _enableTimePrint = false;
         LogString _moduleName = "";
-        LogString _buildMsg(LogString OrigMsg, log_level Level, bool NewLine);
+        LogString _buildMsg(LogString OrigMsg, LogString Level, bool NewLine);
 };
 
 extern MasterLogger RootLogger;
