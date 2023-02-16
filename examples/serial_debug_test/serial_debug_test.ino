@@ -2,16 +2,15 @@
 
 void setup()
 {
-	Debug.init();
-	Debug.setTimePrint(true);
-	Debug.setDebugLevel(SerialDebug::debug_level::all);	
+	RootLogger.init();
+	RootLogger.setDebugLevel(MasterLogger::log_level::all);	
 }
 
 void loop()
 {
-	Debug.logError("Error");
-	Debug.logInfo("Info");
-	Debug.logVerbose("Verb");
-	Debug.logDebug("Debug");
+	RootLogger.logError("Error");
+	RootLogger.logInfo("Info");
+	RootLogger.logVerbose("Verb");
+	RootLogger.logDebug("Debug");
 	delay(1000);
 }
