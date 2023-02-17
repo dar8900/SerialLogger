@@ -14,7 +14,119 @@
 #endif
 #endif
 
-MasterLogger::MasterLogger(baudrate Baudrate, log_level Level, bool LogEnabled, bool TimeprintEnable)
+static void PrintSerialMessage(const char *Message)
+{
+	DebugSerial.print(Message);
+}
+
+void Logger::setPrintCallBack(void (*PrintCB)(const char *Message))
+{
+	if(PrintCB){
+		_printCB = PrintCB;
+	}
+}
+
+void Logger::setModuleName(LogString ModuleName)
+{
+	_moduleName = ModuleName;
+}
+
+void Logger::setDebugLevel(log_level LogLevel)
+{
+	_logLevel = LogLevel;
+}
+
+void Logger::setLogStatus(bool Enable)
+{
+	_logEnabled = Enable;
+}
+
+void Logger::setTimePrint(bool Enable)
+{
+	_enableTimePrint = Enable;
+}
+
+LogString Logger::_buildMsg(LogString Msg, LogString Level, bool NewLine)
+{
+	LogString Time = "";
+	if (_enableTimePrint)
+	{
+		LogString TimePrint = "";
+		uint32_t LogTime = millis();
+		if (LogTime <= 1000)
+		{
+			TimePrint = String(LogTime) + "ms";
+		}
+		else
+		{
+			LogTime /= 1000;
+			TimePrint = String(LogTime) + "s";
+		}
+		Time = TimePrint + " ";
+	}
+	Msg = Time + Level + "\t" + _moduleName + "\t" + Msg + (NewLine ? "\n" : "");
+	return Msg;
+}
+
+void Logger::logError(LogString Message, bool NewLine)
+{
+	if (_logEnabled && (_logLevel == error ||
+						_logLevel == error_debug ||
+						_logLevel == error_info ||
+						_logLevel == error_verbose ||
+						_logLevel == error_info_debug ||
+						_logLevel == error_info_verbose ||
+						_logLevel == all))
+	{
+		Message = _buildMsg(Message, "[ERROR]", NewLine);
+		_printCB(Message.c_str());
+	}
+}
+
+void Logger::logInfo(LogString Message, bool NewLine)
+{
+	if (_logEnabled && (_logLevel == info ||
+						_logLevel == error_info ||
+						_logLevel == info_debug ||
+						_logLevel == info_verbose ||
+						_logLevel == error_info_debug ||
+						_logLevel == all))
+	{
+		Message = _buildMsg(Message, "[INFO]", NewLine);
+		_printCB(Message.c_str());
+	}
+}
+
+void Logger::logVerbose(LogString Message, bool NewLine)
+{
+	if (_logEnabled && (_logLevel == verbose ||
+						_logLevel == error_verbose ||
+						_logLevel == verbose_debug ||
+						_logLevel == info_verbose ||
+						_logLevel == error_info_verbose ||
+						_logLevel == all))
+	{
+		Message = _buildMsg(Message, "[VERB]", NewLine);
+		_printCB(Message.c_str());
+	}
+}
+
+void Logger::logDebug(LogString Message, bool NewLine)
+{
+	if (_logEnabled && (_logLevel == debug ||
+						_logLevel == error_debug ||
+						_logLevel == info_debug ||
+						_logLevel == verbose_debug ||
+						_logLevel == error_info_debug ||
+						_logLevel == all))
+	{
+		Message = _buildMsg(Message, "[DEBUG]", NewLine);
+		_printCB(Message.c_str());
+	}
+}
+
+
+ArduinoLogger::ArduinoLogger(baudrate Baudrate, log_level Level, bool LogEnabled, bool TimeprintEnable)
 {
 	switch (Baudrate)
 	{
@@ -44,133 +156,18 @@ MasterLogger::MasterLogger(baudrate Baudrate, log_level Level, bool LogEnabled, 
 	setTimePrint(TimeprintEnable);
 }
 
-void MasterLogger::init()
+void ArduinoLogger::init()
 {
 	if (!_serialItitialized)
 	{
 		DebugSerial.begin(_baudRate);
 	}
 	_serialItitialized = true;
+	setPrintCallBack(PrintSerialMessage);
 }
 
-void MasterLogger::setDebugLevel(log_level LogLevel)
-{
-	_logLevel = LogLevel;
-}
 
-void MasterLogger::setLogStatus(bool Enable)
-{
-	_logEnabled = Enable;
-}
-
-void MasterLogger::setTimePrint(bool Enable)
-{
-	_enableTimePrint = Enable;
-}
-
-LogString MasterLogger::_buildMsg(LogString Msg, LogString Level, bool NewLine)
-{
-	LogString Time = "";
-	if (_enableTimePrint)
-	{
-		LogString TimePrint = "";
-		uint32_t LogTime = millis();
-		if (LogTime <= 1000)
-		{
-			TimePrint = String(LogTime) + "ms";
-		}
-		else
-		{
-			LogTime /= 1000;
-			TimePrint = String(LogTime) + "s";
-		}
-		Time = TimePrint + " ";
-	}
-	Msg = Time + Level + "\t" + "root - " + Msg + (NewLine ? "\n" : "");
-	return Msg;
-}
-
-void MasterLogger::logError(LogString Message, bool NewLine)
-{
-	if (_logEnabled && (_logLevel == error ||
-						_logLevel == error_debug ||
-						_logLevel == error_info ||
-						_logLevel == error_verbose ||
-						_logLevel == error_info_debug ||
-						_logLevel == error_info_verbose ||
-						_logLevel == all))
-	{
-		Message = _buildMsg(Message, "[ERROR]", NewLine);
-		DebugSerial.print(Message);
-	}
-}
-
-void MasterLogger::logInfo(LogString Message, bool NewLine)
-{
-	if (_logEnabled && (_logLevel == info ||
-						_logLevel == error_info ||
-						_logLevel == info_debug ||
-						_logLevel == info_verbose ||
-						_logLevel == error_info_debug ||
-						_logLevel == all))
-	{
-		Message = _buildMsg(Message, "[INFO]", NewLine);
-		DebugSerial.print(Message);
-	}
-}
-
-void MasterLogger::logVerbose(LogString Message, bool NewLine)
-{
-	if (_logEnabled && (_logLevel == verbose ||
-						_logLevel == error_verbose ||
-						_logLevel == verbose_debug ||
-						_logLevel == info_verbose ||
-						_logLevel == error_info_verbose ||
-						_logLevel == all))
-	{
-		Message = _buildMsg(Message, "[VERB]", NewLine);
-		DebugSerial.print(Message);
-	}
-}
-
-void MasterLogger::logDebug(LogString Message, bool NewLine)
-{
-	if (_logEnabled && (_logLevel == debug ||
-						_logLevel == error_debug ||
-						_logLevel == info_debug ||
-						_logLevel == verbose_debug ||
-						_logLevel == error_info_debug ||
-						_logLevel == all))
-	{
-		Message = _buildMsg(Message, "[DEBUG]", NewLine);
-		DebugSerial.print(Message);
-	}
-}
-
-LogString BranchLogger::_buildMsg(LogString Msg, LogString Level, bool NewLine)
-{
-	LogString Time = "";
-	if (_enableTimePrint)
-	{
-		LogString TimePrint = "";
-		uint32_t LogTime = millis();
-		if (LogTime <= 1000)
-		{
-			TimePrint = String(LogTime) + "ms";
-		}
-		else
-		{
-			LogTime /= 1000;
-			TimePrint = String(LogTime) + "s";
-		}
-		Time = TimePrint + " ";
-	}
-
-	Msg = Time + Level + "\t" + _moduleName + " - " + Msg + (NewLine ? "\n" : "");
-	return Msg;
-}
-
-BranchLogger::BranchLogger(LogString BranchName, log_level Level, bool LogEnable, bool TimeprintEnable)
+ArduinoBranchLogger::ArduinoBranchLogger(LogString BranchName, log_level Level, bool LogEnable, bool TimeprintEnable)
 {
 	setDebugLevel(Level);
 	setLogStatus(LogEnable);
@@ -178,81 +175,10 @@ BranchLogger::BranchLogger(LogString BranchName, log_level Level, bool LogEnable
 	setBranchName(BranchName);
 }
 
-void BranchLogger::setBranchName(LogString BranchName)
+void ArduinoBranchLogger::setBranchName(LogString BranchName)
 {
-	_moduleName = BranchName;
+	setModuleName(BranchName);
 }
 
-void BranchLogger::setDebugLevel(log_level LogLevel)
-{
-	_logLevel = LogLevel;
-}
 
-void BranchLogger::setLogStatus(bool Enable)
-{
-	_logEnabled = Enable;
-}
-
-void BranchLogger::setTimePrint(bool Enable)
-{
-	_enableTimePrint = Enable;
-}
-
-void BranchLogger::logError(LogString Message, bool NewLine)
-{
-	if (_logEnabled && (_logLevel == error ||
-						_logLevel == error_debug ||
-						_logLevel == error_info ||
-						_logLevel == error_verbose ||
-						_logLevel == error_info_debug ||
-						_logLevel == error_info_verbose ||
-						_logLevel == all))
-	{
-		Message = _buildMsg(Message, "[ERROR]", NewLine);
-		DebugSerial.print(Message);
-	}
-}
-
-void BranchLogger::logInfo(LogString Message, bool NewLine)
-{
-	if (_logEnabled && (_logLevel == info ||
-						_logLevel == error_info ||
-						_logLevel == info_debug ||
-						_logLevel == info_verbose ||
-						_logLevel == error_info_debug ||
-						_logLevel == all))
-	{
-		Message = _buildMsg(Message, "[INFO]", NewLine);
-		DebugSerial.print(Message);
-	}
-}
-
-void BranchLogger::logVerbose(LogString Message, bool NewLine)
-{
-	if (_logEnabled && (_logLevel == verbose ||
-						_logLevel == error_verbose ||
-						_logLevel == verbose_debug ||
-						_logLevel == info_verbose ||
-						_logLevel == error_info_verbose ||
-						_logLevel == all))
-	{
-		Message = _buildMsg(Message, "[VERB]", NewLine);
-		DebugSerial.print(Message);
-	}
-}
-
-void BranchLogger::logDebug(LogString Message, bool NewLine)
-{
-	if (_logEnabled && (_logLevel == debug ||
-						_logLevel == error_debug ||
-						_logLevel == info_debug ||
-						_logLevel == verbose_debug ||
-						_logLevel == error_info_debug ||
-						_logLevel == all))
-	{
-		Message = _buildMsg(Message, "[DEBUG]", NewLine);
-		DebugSerial.print(Message);
-	}
-}
-
-MasterLogger RootLogger(MasterLogger::baudrate::baud_115200, Logger::log_level::all, true, false);
+ArduinoLogger RootLogger(ArduinoLogger::baudrate::baud_115200, Logger::log_level::all, true, false);

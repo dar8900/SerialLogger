@@ -3,7 +3,7 @@
 void setup()
 {
 	RootLogger.init();
-	RootLogger.setDebugLevel(MasterLogger::log_level::all);	
+	RootLogger.setDebugLevel(ArduinoLogger::log_level::all);	
 }
 
 void loop()
