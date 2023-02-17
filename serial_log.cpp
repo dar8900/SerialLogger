@@ -166,7 +166,6 @@ void ArduinoLogger::init()
 	setPrintCallBack(PrintSerialMessage);
 }
 
-
 ArduinoBranchLogger::ArduinoBranchLogger(LogString BranchName, log_level Level, bool LogEnable, bool TimeprintEnable)
 {
 	setDebugLevel(Level);
