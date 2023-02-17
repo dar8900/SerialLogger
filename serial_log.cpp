@@ -172,6 +172,7 @@ ArduinoBranchLogger::ArduinoBranchLogger(LogString BranchName, log_level Level, 
 	setLogStatus(LogEnable);
 	setTimePrint(TimeprintEnable);
 	setBranchName(BranchName);
+	setPrintCallBack(PrintSerialMessage);
 }
 
 void ArduinoBranchLogger::setBranchName(LogString BranchName)
