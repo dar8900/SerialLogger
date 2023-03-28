@@ -16,7 +16,9 @@
 
 static void PrintSerialMessage(const char *Message)
 {
+#ifndef ARDUINO_AVR_ATTINYX5	
 	DebugSerial.print(Message);
+#endif
 }
 
 void Logger::setPrintCallBack(void (*PrintCB)(const char *Message))
@@ -160,7 +162,9 @@ void ArduinoLogger::init()
 {
 	if (!_serialItitialized)
 	{
+#ifndef ARDUINO_AVR_ATTINYX5		
 		DebugSerial.begin(_baudRate);
+#endif		
 	}
 	_serialItitialized = true;
 	setPrintCallBack(PrintSerialMessage);
